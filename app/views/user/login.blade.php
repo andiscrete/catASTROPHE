@@ -3,7 +3,6 @@
 @section('content')
 <h2>Login</h2>
 {{ Form::open(array('url' => 'login')) }}
-{{ Form::token(); }}
 <div class="form-group">
   <label for="email">Email address</label>
   <input type="email" class="form-control" id="email" name="email" value="{{Input::old('email')}}" placeholder="Email">
@@ -14,5 +13,5 @@
 </div>
 <button type="submit" class="btn btn-primary">Login</button>
 {{ Form::close() }}
-<p>Not a member? <a hef='/user/create'>Join Here</a>
+<p>Not a member? <a href='/user/create'>Join Here</a>!
 @stop

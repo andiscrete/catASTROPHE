@@ -2,23 +2,16 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
-
 	public function index()
 	{
-		$vars['example'] = 'Example';
-		return View::make('home', $vars);
+		$animals = Animal::whereNull('user_id')->take(6)->get();
+
+		$facts = CatFact::all();
+		$shuffled_facts = $facts->shuffle();
+		foreach($animals as $key=>&$animal){
+			$animal->cat_fact = $shuffled_facts[$key]->fact;
+		}
+		return View::make('home', ["animals" => $animals, "facts"=>$facts]);
 	}
 
 }

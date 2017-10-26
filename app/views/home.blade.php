@@ -2,37 +2,31 @@
 
 @section('content')
 <div class="jumbotron">
-  <h2>Welcome!</h2>
-  <p class="lead">Please feel free to browse these lovely pictures brought to you coutesy of Pexels.</p>
+  @if(!Auth::check())<h2>Welcome!</h2>@else<h2>Welcome {{Auth::user()->forename}} {{Auth::user()->surname}}!</h2>@endif
+  <p class="lead">Please feel free to browse these lovely pictures brought to you royalty free coutesy of Pexels.</p>
+  @if(!Auth::check())
   <a class="btn btn-lg btn-primary" href="/user/create" role="button">Join </a>
+  @else
+  @if(Auth::user()->member == 1)
+  <a class="btn btn-lg btn-primary" href="/user/{{Auth::id()}}/member" role="button">Members Area</a>
+  @else
+  <a class="btn btn-lg btn-primary" href="/user/{{Auth::id()}}/membership" role="button">Become a Member</a>
+  @endif
+  @endif
 </div>
 <div class="row">
-  <div class="col-sm-4">
-    <div class="card pull-left" style="">
-      <img class="card-img-top" src="https://images.pexels.com/photos/39317/chihuahua-dog-puppy-cute-39317.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Dogs in Teacups</h4>
-        <p class="card-text">It's important to occasionally <i>paws</i> for a cup of tea</p>
-      </div>
+@forelse($animals as $animal)
+<div class="col-sm-4">
+  <div class="card">
+    <img class="card-img-top" src="/images/{{$animal->image}}" alt="{{$animal->title}}">
+    <div class="card-body">
+      <h4 class="card-title">{{$animal->title}}</h4>
+      <p class="card-text">{{$animal->cat_fact}}</p>
     </div>
   </div>
-  <div class="col-sm-4">
-    <div class="card pull-left" style="">
-      <img class="card-img-top" src="https://images.pexels.com/photos/45242/wolf-torque-wolf-moon-cloud-45242.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Emo Wolves</h4>
-        <p class="card-text">Much Full Moon! Such intense! Wow!</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card pull-left" style="">
-      <img class="card-img-top" src="https://images.pexels.com/photos/227691/pexels-photo-227691.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Sheep</h4>
-        <p class="card-text">I've <i>herd</i> that puns are good way to win people over</p>
-      </div>
-    </div>
-  </div>
+</div>
+@empty
+<p>Well this is a bit boring isn't it? Maybe try seeding the database for a 100% more catisfaction guaranteed!</p>
+@endforelse
 </div>
 @stop

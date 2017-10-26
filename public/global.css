@@ -2,3 +2,19 @@ body{
   min-height: 75rem;
   padding-top: 4.5rem;
 }
+
+.navbar{
+  background-color: #673AB7;
+}
+
+.jumbotron{
+  background-color: #FFC107;
+}
+
+.card{
+  margin-bottom:10px;
+}
+
+.card:hover{
+  background-color: #EDE7F6;
+}

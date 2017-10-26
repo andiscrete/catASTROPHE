@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
       $table->string('password');
       $table->text('payment')->nullable();
 			$table->boolean('member')->default(0);
+			$table->string('favourite_species')->nullable();
 			$table->rememberToken();
 			$table->timestamps();
 		});

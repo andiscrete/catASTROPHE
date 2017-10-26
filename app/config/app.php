@@ -191,4 +191,10 @@ return array(
 
 	),
 
+	'paypal' => [
+		'environment' => 'sandbox',
+		'sandbox_id' => 'AdvwOXjoNNnkwDJxkY-JK-WRBudvdk_EfoNFk-PrRowvxzHc0b7YwjEg2EjdxZM2tMpBnZC9YckOAyRl',
+		'production_id' => 'xxxxxxxx',
+	],
+
 );

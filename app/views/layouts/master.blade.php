@@ -6,7 +6,7 @@
     <meta name="description" content="Lil Cat project for Sony">
     <meta name="author" content="Andrew Smith">
 
-    <title>CATastrophe! - {{Route::currentRouteName()}}</title>
+    <title>catASTROPHE! - {{Route::currentRouteName()}}</title>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <script
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -17,8 +17,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#"> ^ * _ * ^</a>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+      <a class="navbar-brand" href="#"> <i>cat</i>ASTROPHE!</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,16 +28,13 @@
             <a class="nav-link <?php if(\Route::currentRouteName() == '') echo 'active'; ?>" href="/home">Home</a>
           </li>
           @if(Auth::check())
-            <li class="nav-item">
-              <a class="nav-link <?php if(\Route::currentRouteName() == 'user.view') echo 'active'; ?>" href="/user/{{Auth::user()->id}}">{{Auth::user()->forename}} {{Auth::user()->surname}}</a>
-            </li>
             @if(Auth::user()->member == 1)
             <li class="nav-item">
               <a class="nav-link <?php if(\Route::currentRouteName() == 'user.member') echo 'active'; ?>" href="/user/{{Auth::user()->id}}/member">Member</a>
             </li>
             @else
             <li class="nav-item">
-              <a class="nav-link <?php if(\Route::currentRouteName() == 'user.membership') echo 'active'; ?>" href="/user/membership">Membership</a>
+              <a class="nav-link <?php if(\Route::currentRouteName() == 'user.membership') echo 'active'; ?>" href="/user/{{Auth::user()->id}}/membership">Membership</a>
             </li>
             @endif
             <li class="nav-item">
@@ -55,15 +52,19 @@
       </div>
     </nav>
     <main role="main" class="container">
-      @if(count($errors->all()) > 0)
+      @if(count($errors->all()) > 0 || Session::has('error'))
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+        <h1>Uh oh...</h1>
         <ul>
           @foreach($errors->all() as $error)
           <li>{{$error}}</li>
           @endforeach
+          @if(Session::has('error'))
+          <li>{{Session::get('error')}}</li>
+          @endif
         </ul>
       </div>
       @endif

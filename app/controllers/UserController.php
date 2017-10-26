@@ -43,18 +43,6 @@ class UserController extends \BaseController {
 		}else return Redirect::to('/home');
 	}
 
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
 	/**
 	 * Authenticate the User and go to the homepage
 	 * or return back to the form with errors
@@ -69,6 +57,7 @@ class UserController extends \BaseController {
 				Auth::login($return);
 				return Redirect::to('/home');
 			}else{
+				Session::flash('error', 'Email or password not recognised');
 				return Redirect::to('login')->withInput(Input::except('password'));
 			}
 		}else{
@@ -87,9 +76,35 @@ class UserController extends \BaseController {
 		return "<h2>Congratulations {$user->forename} {$user->surname}!</h2><p>You've successfully become a member, which means you can now enter the <a href='/user/{$user->id}/member'>secret page</a>!</p>";
 	}
 
+	public function membership(){
+		if(Auth::user()->member == 1){
+			return Redirect::to("/user/".Auth::user()->id."/member");
+		}else{
+			return View::make('user.membership');
+		}
+	}
+
 	public function member(){
 		$animal_id = Animal::where("user_id",Auth::id())->pluck('id');
 		return View::make('user.member', ["animal_id" => $animal_id]);
+	}
+
+	public function species(){
+		$input = Input::all();
+		if(isset($input['species'])){
+			$user = User::find(Auth::id())->with('animal');
+			if(isset($user->animal)){
+				Session::flash('error', 'You seem to already have a unique image assigned to you');
+			}else{
+				try{
+					Animal::create_unique($input['species'],Auth::id());
+					DB::table('users')->where('id','=',Auth::id())->update(['favourite_species'=>$input['species']]);
+				}catch(Exception $e){
+					Session::flash('error', $e->getMessage());
+				}
+			}
+		}
+		return Redirect::to("/user/".Auth::user()->id."/member");
 	}
 
 	/**
